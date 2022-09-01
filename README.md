@@ -2,7 +2,7 @@
 
 [![Actions Status](https://github.com/ViktorFAlex/frontend-project-46/workflows/hexlet-check/badge.svg)](https://github.com/ViktorFAlex/frontend-project-46/actions)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9a9be89c302d18b51243/maintainability)](https://codeclimate.com/github/ViktorFAlex/frontend-project-46/maintainability)
-[![Actions Status](https://github.com/ViktorFAlex/frontend-project-46/workflows/nodejs/badge.svg)](https://github.com/ViktorFAlex/frontend-project-46/actions)
+[![Actions Status](https://github.com/ViktorFAlex/frontend-project-46/workflows/Node%20CI/badge.svg)](https://github.com/ViktorFAlex/frontend-project-46/actions)
 
 ### Demonstrations:
 
