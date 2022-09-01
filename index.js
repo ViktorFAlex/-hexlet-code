@@ -3,7 +3,7 @@ import path from 'path';
 import _ from 'lodash';
 
 const readFile = (pathToFile) => {
-  const absolutePath = path.resolve(process.cwd(), '__fixtures__', pathToFile);
+  const absolutePath = path.resolve(process.cwd(), pathToFile);
   const fileData = fs.readFileSync(absolutePath).toString();
   return fileData;
 };
@@ -25,18 +25,20 @@ export default (path1, path2) => {
     const value2 = _.get(dataObject2, val, '');
     const defaultIndent = '  ';
     if (value1 === value2) {
-      return _.concat(...[acc], [`${defaultIndent}  ${val}: ${value1}`]);
+      return _.concat(...[acc], [`${defaultIndent.repeat(2)}${val}: ${value1}`]);
     }
     if (value1 === '' || value2 === '') {
+      const subIndent = value1 === '' ? '+ ' : '- ';
       return _.concat(...[acc], [
-        `${defaultIndent}- ${val}: ${value1}${value2}`,
+        `${defaultIndent}${subIndent}${val}: ${value1}${value2}`,
       ]);
     }
     return _.concat(
       ...[acc],
       [`${defaultIndent}- ${val}: ${value1}`],
-      [`  + ${val}: ${value2}`],
+      [`${defaultIndent}+ ${val}: ${value2}`],
     );
   }, []);
-  console.log(['{', ...sorted2, '}'].join('\n'));
+  const result = (['{', ...sorted2, '}'].join('\n'));
+  return result;
 };
