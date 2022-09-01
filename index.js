@@ -1,13 +1,9 @@
-import fs from "fs";
-import path from "path";
-import _ from "lodash";
+import fs from 'fs';
+import path from 'path';
+import _ from 'lodash';
 
 const readFile = (pathToFile) => {
-  const absolutePath = path.resolve(
-    process.cwd(),
-    "frontend-project-46/__fixtures__",
-    pathToFile
-  );
+  const absolutePath = path.resolve(process.cwd(), '__fixtures__', pathToFile);
   const fileData = fs.readFileSync(absolutePath).toString();
   return fileData;
 };
@@ -25,23 +21,23 @@ export default (path1, path2) => {
   const dataObject2 = JSON.parse(data2);
   const mergedKeys = mergeKeys(dataObject1, dataObject2);
   const sorted2 = _.sortBy(mergedKeys).reduce((acc, val) => {
-    const value1 = _.get(dataObject1, val, "");
-    const value2 = _.get(dataObject2, val, "");
-    const defaultIndent = "  ";
+    const value1 = _.get(dataObject1, val, '');
+    const value2 = _.get(dataObject2, val, '');
+    const defaultIndent = '  ';
     if (value1 === value2) {
       return _.concat(...[acc], [`${defaultIndent}  ${val}: ${value1}`]);
     }
-    if (value2 === "") {
+    if (value2 === '') {
       return _.concat(...[acc], [`${defaultIndent}- ${val}: ${value1}`]);
     }
-    if (value1 === "") {
+    if (value1 === '') {
       return _.concat(...[acc], [`${defaultIndent}+ ${val}: ${value2}`]);
     }
     return _.concat(
       ...[acc],
       [`${defaultIndent}- ${val}: ${value1}`],
-      [`  + ${val}: ${value2}`]
+      [`  + ${val}: ${value2}`],
     );
   }, []);
-  console.log(["{", ...sorted2, "}"].join("\n"));
+  console.log(['{', ...sorted2, '}'].join('\n'));
 };
