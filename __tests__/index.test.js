@@ -29,3 +29,24 @@ test('gendiff with plain json', () => {
   const result = readFile('resultPlain.txt');
   expect(genDiff(file1, file2, 'plain')).toEqual(result);
 });
+
+test('gendiff with plain yaml', () => {
+  const file1 = getFixturePath('file1.yaml');
+  const file2 = getFixturePath('file2.yaml');
+  const result = readFile('resultPlain.txt');
+  expect(genDiff(file1, file2, 'plain')).toEqual(result);
+});
+
+test('gendiff with json', () => {
+  const file1 = getFixturePath('file1.json');
+  const file2 = getFixturePath('file2.json');
+  const result = readFile('resultJson.txt');
+  expect(genDiff(file1, file2, 'json')).toEqual(result);
+});
+
+test('gendiff with json', () => {
+  const file1 = getFixturePath('file1.yaml');
+  const file2 = getFixturePath('file2.yaml');
+  const result = readFile('resultJson.txt');
+  expect(genDiff(file1, file2, 'json')).toEqual(result);
+});
