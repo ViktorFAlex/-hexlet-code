@@ -15,15 +15,15 @@ genDiff - compares two files of .json or .yaml format and log any difference was
 #### Setup Guide: 
 To install type "make install".
 #### Launch Guide:
-To start app, type in command line: "gendiff fileToCompare1.ext fileToCompare2.ext".
-To get help and commands, type in command line: "gendiff -h".
-Every example of formatting date you can find in asciinemas above.    
+To start app, type in command line: "gendiff fileToCompare1.ext fileToCompare2.ext".    
+To get help and commands, type in command line: "gendiff -h".    
+Every example of formatting data you can find in asciinemas above.        
 ## Описание проекта:
 genDiff - сравнивает два файла в формате .json или .yaml или выводит в консоль все различия между ними.
 #### Гайд по установке:
 Для установки введите "make install".
 #### Инструкция по запуску: 
-Для установки, введите в командной строке: "gendiff файлДляСравнения1.ext файлДляСравнения2.ext".
-Для вывода помощи и комманд, введите в командной строке: "gendiff -h".
-Все примеры работы приложения и возможных вариантов форматирования данных, Вы можете найти выше.
+Для установки, введите в командной строке: "gendiff файлДляСравнения1.ext файлДляСравнения2.ext".    
+Для вывода помощи и комманд, введите в командной строке: "gendiff -h".    
+Все примеры работы приложения и возможных вариантов форматирования данных, Вы можете найти выше.    
 
