@@ -6,9 +6,9 @@
 
 ### Demonstrations/Демонстрации
 
-Example of genDiff with plain objects: https://asciinema.org/a/518306
-Example of genDiff with nested objects, with plain formatting: https://asciinema.org/a/519132
-Example of genDiff with JSON formatting: https://asciinema.org/a/519139
+Example of genDiff with plain objects: https://asciinema.org/a/518306    
+Example of genDiff with nested objects, with plain formatting: https://asciinema.org/a/519132    
+Example of genDiff with JSON formatting: https://asciinema.org/a/519139    
 
 ## Description of project:
 genDiff - compares two files of .json or .yaml format and log any difference was made between.
