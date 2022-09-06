@@ -11,7 +11,8 @@ program
   .argument('<filetype1>')
   .argument('<filetype2>')
   .action((filetype1, filetype2) => {
-    const result = genDiff(filetype1, filetype2);
+    const formatType = program.opts().format;
+    const result = genDiff(filetype1, filetype2, formatType);
     console.log(result);
   });
 program.parse();

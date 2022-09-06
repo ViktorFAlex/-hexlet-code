@@ -3,8 +3,10 @@ const addIndent = (type) => {
     case ('unchanged'):
       return '    ';
     case ('added'):
+    case ('set'):
       return '  + ';
     case ('deleted'):
+    case ('changed'):
       return '  - ';
     default:
       throw new Error('Unexpected file difference');

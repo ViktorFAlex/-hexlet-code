@@ -6,4 +6,5 @@
 
 ### Demonstrations:
 
-https://asciinema.org/a/518306
+Example of genDiff with plain objects: https://asciinema.org/a/518306
+Example of genDiff with nested objects, with stylizing: https://asciinema.org/a/519132
