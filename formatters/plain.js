@@ -18,7 +18,7 @@ export default (file) => {
       }
       return [...acc, []];
     }, []);
-    return result.flat(Infinity).join('\n');
+    return result.flat(Infinity).join('\n').trim();
   };
   return iter(file, '');
 };
