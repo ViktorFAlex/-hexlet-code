@@ -39,7 +39,7 @@ export default (path1, path2, formatName) => {
       }
       if (_.isObject(children2) && children1 !== undefined) {
         return [...acc, { name: elem, type: 'changed', children: children1 },
-          { name: elem, type: 'set', children: iter({}, children2) }];
+          { name: elem, type: 'set', children: iter({}, children2, false) }];
       }
       return children1 ? [...acc, { name: elem, type: `${typeForDeleted}`, children: iter(children1, {}, false) }]
         : [...acc, { name: elem, type: `${typeForAdded}`, children: iter({}, children2, false) }];
