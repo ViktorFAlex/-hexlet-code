@@ -80,8 +80,10 @@ const iter = (data1, data2, isChangeType = true) => {
         return [{ ...obj1, children: val1 }, { ...obj2, children: iter({}, val2, false) }];
       case (8):
         return [{ ...obj1, children: iter(val2, {}, false) }];
-      default:
+      case (9):
         return [{ ...obj1, children: iter({}, val1, false) }];
+      default:
+        throw new Error('Unexpectated state');
     }
   });
 };
