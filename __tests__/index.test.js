@@ -31,4 +31,3 @@ test.each(files)('description', (file1, file2) => {
   const result = readFile('resultJson.txt');
   expect(genDiff(file1path, file2path, 'json')).toEqual(result);
 });
-
