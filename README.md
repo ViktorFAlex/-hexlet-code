@@ -19,7 +19,7 @@ To start app, type in command line: "gendiff fileToCompare1.ext fileToCompare2.e
 To get help and commands, type in command line: "gendiff -h".    
 Every example of formatting data you can find in asciinemas above.        
 ## Описание проекта:
-genDiff - сравнивает два файла в формате .json или .yaml или выводит в консоль все различия между ними.
+genDiff - сравнивает два файла в формате .json или .yaml и выводит в консоль все различия между ними.
 #### Гайд по установке:
 Для установки введите "make install".
 #### Инструкция по запуску: 
