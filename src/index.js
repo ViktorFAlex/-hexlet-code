@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import parse from './parsers.js';
-import format from '../formatters/index.js';
+import format from './formatters/index.js';
 
 const mergeKeys = (data1, data2) => {
   const keys1 = data1 ? Object.keys(data1) : [];
