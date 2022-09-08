@@ -1,5 +1,5 @@
 const isValid = (elem) => (typeof elem === 'string' || Array.isArray(elem));
-const makeStr = (elem) => (Array.isArray(elem) ? '[complex value]' : `'${elem}'`)
+const makeStr = (elem) => (Array.isArray(elem) ? '[complex value]' : `'${elem}'`);
 
 export default (obj) => {
   const iter = (node, propName, point = false) => {
