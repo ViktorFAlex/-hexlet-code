@@ -14,17 +14,12 @@ const getState = (value1, value2) => {
       return '1';
     case (value2 === undefined):
       return '2';
-    case (value1 !== undefined && value2 !== undefined):
-      switch (true) {
-        case (value1 === value2):
-          return '3';
-        case (_.isObject(value1) && _.isObject(value2)):
-          return '4';
-        default:
-          return '5';
-      }
+    case (value1 === value2):
+      return '3';
+    case (_.isObject(value1) && _.isObject(value2)):
+      return '4';
     default:
-      throw new Error(`Unexpectated states of values: ${value1}, ${value2}!`);
+      return '5';
   }
 };
 
