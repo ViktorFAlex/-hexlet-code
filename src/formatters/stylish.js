@@ -1,28 +1,29 @@
-const addIndent = (type) => {
+const generateSymbol = (type) => {
   switch (type) {
     case ('unchanged'):
-      return '    ';
+      return '  ';
     case ('added'):
     case ('set'):
-      return '  + ';
+      return '+ ';
     case ('deleted'):
     case ('changed'):
-      return '  - ';
+      return '- ';
     default:
       throw new Error('Unexpected file difference');
   }
 };
 
-export default (file) => {
+export default (obj) => {
   const iter = (node, depth = 0) => {
-    const baseIndent = ' '.repeat(depth * 4);
+    const bracketIndent = ' '.repeat(depth * 4);
+    const baseIndent = ' '.repeat(depth * 4 + 2);
     const result = node.reduce((acc, elem) => {
       const { name, type, children } = elem;
       const newChildren = Array.isArray(children) ? iter(children, depth + 1) : children;
-      const indent = `${baseIndent}${addIndent(type)}`;
+      const indent = `${baseIndent}${generateSymbol(type)}`;
       return [...acc, `${indent}${name}: ${newChildren}`];
     }, []);
-    return ['{', ...result, `${baseIndent}}`].join('\n');
+    return ['{', ...result, `${bracketIndent}}`].join('\n');
   };
-  return iter(file);
+  return iter(obj);
 };

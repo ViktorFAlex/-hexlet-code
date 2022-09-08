@@ -1,24 +1,32 @@
-const makeString = (elem) => (typeof elem === 'string' ? `'${elem}'` : `${elem}`);
+const isValid = (elem) => (typeof elem === 'string' || Array.isArray(elem));
+const makeStr = (elem) => (Array.isArray(elem) ? '[complex value]' : `'${elem}'`)
 
-export default (file) => {
+export default (obj) => {
   const iter = (node, propName, point = false) => {
-    const result = node.reduce((acc, elem, index) => {
+    const result = node.map((elem, index) => {
       const { name, type, children } = elem;
-      const newValue = Array.isArray(children) ? '[complex value]' : makeString(children);
+      const prevElem = node[index - 1];
+      const prevChildren = prevElem ? prevElem.children : [];
+      const newVal = isValid(children) ? makeStr(children) : children;
+      const prevVal = isValid(prevChildren) ? makeStr(prevChildren) : prevChildren;
       const additionalPoint = point ? '.' : '';
       const newProp = `${propName}${additionalPoint}${name}`;
-      if (type === 'unchanged') {
-        return Array.isArray(children) ? [...acc, iter(children, `${newProp}`, true)] : [...acc, []];
+      switch (type) {
+        case ('unchanged'):
+          return Array.isArray(children) ? iter(children, `${newProp}`, true) : [];
+        case ('added'):
+          return `Property '${newProp}' was added with value: ${newVal}`;
+        case ('deleted'):
+          return `Property '${newProp}' was removed`;
+        case ('set'):
+          return `Property '${newProp}' was updated. From ${prevVal} to ${newVal}`;
+        case ('changed'):
+          return [];
+        default:
+          throw new Error('Unexpected type!');
       }
-      if (type === 'added') return [...acc, `Property '${newProp}' was added with value: ${newValue}`];
-      if (type === 'deleted') return [...acc, `Property '${newProp}' was removed`];
-      if (type === 'set') {
-        const value = Array.isArray(node[index - 1].children) ? '[complex value]' : makeString(node[index - 1].children);
-        return [...acc, `Property '${newProp}' was updated. From ${value} to ${newValue}`];
-      }
-      return [...acc, []];
-    }, []);
+    });
     return result.flat(Infinity).join('\n').trim();
   };
-  return iter(file, '');
+  return iter(obj, '');
 };

@@ -2,14 +2,14 @@ import plain from './plain.js';
 import stylish from './stylish.js';
 import json from './json.js';
 
-export default (file, format = 'stylish') => {
+export default (obj, format = 'stylish') => {
   switch (format) {
     case ('stylish'):
-      return stylish(file);
+      return stylish(obj);
     case ('plain'):
-      return plain(file);
+      return plain(obj);
     case ('json'):
-      return json(file);
+      return json(obj);
     default:
       throw new Error('Unexpected formatter');
   }

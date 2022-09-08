@@ -1,1 +1,1 @@
-export default (file) => JSON.stringify(file);
+export default (obj) => JSON.stringify(obj);

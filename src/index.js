@@ -32,7 +32,7 @@ const getState = (value1, value2) => {
     case (value2 === undefined):
       return 9;
     default:
-      throw new Error('Unexpectated state of values');
+      throw new Error('Unexpectated states of values');
   }
 };
 
@@ -58,7 +58,7 @@ const addNewTypes = (state, elem, isChangeKey) => {
 
 const getChildrenValues = (node, data1, data2) => [_.get(data1, node), _.get(data2, node)];
 
-const iter = (data1, data2, isChangeType = true) => {
+const merge = (data1, data2, isChangeType = true) => {
   const sortedKeys = _.sortBy(mergeKeys(data1, data2));
   return sortedKeys.flatMap((elem) => {
     const [val1, val2] = getChildrenValues(elem, data1, data2);
@@ -73,17 +73,15 @@ const iter = (data1, data2, isChangeType = true) => {
       case (3):
         return [{ ...obj1, children: val2 }];
       case (5):
-        return [{ ...obj1, children: iter(val1, val2) }];
+        return [{ ...obj1, children: merge(val1, val2) }];
       case (6):
-        return [{ ...obj1, children: iter(val1, {}, false) }, { ...obj2, children: val2 }];
+        return [{ ...obj1, children: merge(val1, {}, false) }, { ...obj2, children: val2 }];
       case (7):
-        return [{ ...obj1, children: val1 }, { ...obj2, children: iter({}, val2, false) }];
+        return [{ ...obj1, children: val1 }, { ...obj2, children: merge({}, val2, false) }];
       case (8):
-        return [{ ...obj1, children: iter(val2, {}, false) }];
-      case (9):
-        return [{ ...obj1, children: iter({}, val1, false) }];
+        return [{ ...obj1, children: merge(val2, {}, false) }];
       default:
-        throw new Error('Unexpectated state');
+        return [{ ...obj1, children: merge({}, val1, false) }];
     }
   });
 };
@@ -91,6 +89,6 @@ const iter = (data1, data2, isChangeType = true) => {
 export default (path1, path2, formatName) => {
   const dataObject1 = parse(path1);
   const dataObject2 = parse(path2);
-  const result = iter(dataObject1, dataObject2, true);
+  const result = merge(dataObject1, dataObject2, true);
   return format(result, formatName);
 };
