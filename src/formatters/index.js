@@ -4,13 +4,13 @@ import json from './json.js';
 
 export default (obj, format = 'stylish') => {
   switch (format) {
-    case ('stylish'):
+    case 'stylish':
       return stylish(obj);
-    case ('plain'):
+    case 'plain':
       return plain(obj);
-    case ('json'):
+    case 'json':
       return json(obj);
     default:
-      throw new Error('Unexpected formatter');
+      throw new Error(`Unexpected format: ${format}!`);
   }
 };

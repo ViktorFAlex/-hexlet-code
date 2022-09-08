@@ -1,15 +1,15 @@
 const generateSymbol = (type) => {
   switch (type) {
-    case ('unchanged'):
+    case 'unchanged':
       return '  ';
-    case ('added'):
-    case ('set'):
+    case 'added':
+    case 'set':
       return '+ ';
-    case ('deleted'):
-    case ('changed'):
+    case 'deleted':
+    case 'changed':
       return '- ';
     default:
-      throw new Error('Unexpected file difference');
+      throw new Error(`Unexpected node difference: ${type}!`);
   }
 };
 

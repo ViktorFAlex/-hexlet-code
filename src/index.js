@@ -10,78 +10,66 @@ const mergeKeys = (data1, data2) => {
 
 const getState = (value1, value2) => {
   switch (true) {
-    case (!_.isObject(value1) && !_.isObject(value2)):
+    case (value1 === undefined):
+      return '1';
+    case (value2 === undefined):
+      return '2';
+    case (value1 !== undefined && value2 !== undefined):
       switch (true) {
         case (value1 === value2):
-          return 1;
-        case (value1 !== undefined && value2 !== undefined):
-          return 2;
-        case (value1 === undefined):
-          return 3;
+          return '3';
+        case (_.isObject(value1) && _.isObject(value2)):
+          return '4';
         default:
-          return 4;
+          return '5';
       }
-    case (_.isObject(value1) && _.isObject(value2)):
-      return 5;
-    case (_.isObject(value1) && value2 !== undefined):
-      return 6;
-    case (_.isObject(value2) && value1 !== undefined):
-      return 7;
-    case (value1 === undefined):
-      return 8;
-    case (value2 === undefined):
-      return 9;
     default:
-      throw new Error('Unexpectated states of values');
+      throw new Error(`Unexpectated states of values: ${value1}, ${value2}!`);
   }
 };
 
-const addNewTypes = (state, elem, isChangeKey) => {
-  const typeForDeleted = isChangeKey ? 'deleted' : 'unchanged';
-  const typeForAdded = isChangeKey ? 'added' : 'unchanged';
-  const obj = { name: elem };
+const addNewTypes = (state, isChangedType) => {
+  const typeForDeleted = isChangedType ? 'deleted' : 'unchanged';
+  const typeForAdded = isChangedType ? 'added' : 'unchanged';
   switch (state) {
-    case (1):
-    case (5):
-      return [{ ...obj, type: 'unchanged' }, {}];
-    case (2):
-    case (6):
-    case (7):
-      return [{ ...obj, type: 'changed' }, { ...obj, type: 'set' }];
-    case (3):
-    case (8):
-      return [{ ...obj, type: `${typeForAdded}` }, {}];
+    case '1':
+      return [typeForAdded, null];
+    case '2':
+      return [typeForDeleted, null];
+    case '3':
+    case '4':
+      return ['unchanged', null];
+    case '5':
+      return ['changed', 'set'];
     default:
-      return [{ ...obj, type: `${typeForDeleted}` }, {}];
+      throw new Error(`Unexpectated state: ${state}!`);
   }
 };
 
 const getChildrenValues = (node, data1, data2) => [_.get(data1, node), _.get(data2, node)];
 
-const merge = (data1, data2, isChangeType = true) => {
+const merge = (data1, data2, isChangedType = true) => {
   const sortedKeys = _.sortBy(mergeKeys(data1, data2));
   return sortedKeys.flatMap((elem) => {
     const [val1, val2] = getChildrenValues(elem, data1, data2);
     const state = getState(val1, val2);
-    const [obj1, obj2] = addNewTypes(state, elem, isChangeType);
+    const [type1, type2] = addNewTypes(state, isChangedType);
+    const children1 = _.isObject(val1) ? merge(val1, {}, false) : val1;
+    const children2 = _.isObject(val2) ? merge({}, val2, false) : val2;
+    const obj1 = { name: elem, type: type1 };
+    const obj2 = { name: elem, type: type2 };
     switch (state) {
-      case (1):
-      case (4):
-        return [{ ...obj1, children: val1 }];
-      case (2):
-        return [{ ...obj1, children: val1 }, { ...obj2, children: val2 }];
-      case (3):
-        return [{ ...obj1, children: val2 }];
-      case (5):
-        return [{ ...obj1, children: merge(val1, val2) }];
-      case (6):
-        return [{ ...obj1, children: merge(val1, {}, false) }, { ...obj2, children: val2 }];
-      case (7):
-        return [{ ...obj1, children: val1 }, { ...obj2, children: merge({}, val2, false) }];
-      case (8):
-        return [{ ...obj1, children: merge(val2, {}, false) }];
+      case '1':
+        return { ...obj1, children: children2 };
+      case '2':
+      case '3':
+        return { ...obj1, children: children1 };
+      case '4':
+        return { ...obj1, children: merge(val1, val2) };
+      case '5':
+        return [{ ...obj1, children: children1 }, { ...obj2, children: children2 }];
       default:
-        return [{ ...obj1, children: merge({}, val1, false) }];
+        throw new Error(`Unexpectated state: ${state}!`);
     }
   });
 };
