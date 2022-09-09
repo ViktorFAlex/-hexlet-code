@@ -11,33 +11,15 @@ const mergeKeys = (data1, data2) => {
 const getState = (value1, value2) => {
   switch (true) {
     case (value1 === undefined):
-      return '1';
+      return 'undefined1';
     case (value2 === undefined):
-      return '2';
+      return 'undefined2';
     case (value1 === value2):
-      return '3';
+      return 'equal';
     case (_.isObject(value1) && _.isObject(value2)):
-      return '4';
+      return 'bothObjects';
     default:
-      return '5';
-  }
-};
-
-const addNewTypes = (state, isChangedType) => {
-  const typeForDeleted = isChangedType ? 'deleted' : 'unchanged';
-  const typeForAdded = isChangedType ? 'added' : 'unchanged';
-  switch (state) {
-    case '1':
-      return [typeForAdded, null];
-    case '2':
-      return [typeForDeleted, null];
-    case '3':
-    case '4':
-      return ['unchanged', null];
-    case '5':
-      return ['changed', 'set'];
-    default:
-      throw new Error(`Unexpectated state: ${state}!`);
+      return 'diffState';
   }
 };
 
@@ -48,21 +30,23 @@ const merge = (data1, data2, isChangedType = true) => {
   return sortedKeys.flatMap((elem) => {
     const [val1, val2] = getChildrenValues(elem, data1, data2);
     const state = getState(val1, val2);
-    const [type1, type2] = addNewTypes(state, isChangedType);
+    const typeForDeleted = isChangedType ? 'deleted' : 'unchanged';
+    const typeForAdded = isChangedType ? 'added' : 'unchanged';
     const children1 = _.isObject(val1) ? merge(val1, {}, false) : val1;
     const children2 = _.isObject(val2) ? merge({}, val2, false) : val2;
-    const obj1 = { name: elem, type: type1 };
-    const obj2 = { name: elem, type: type2 };
+    const obj1 = { name: elem, type: 'unchanged', children: children1 };
+    const obj2 = { name: elem, type: 'unchanged', children: children2 };
     switch (state) {
-      case '1':
-        return { ...obj1, children: children2 };
-      case '2':
-      case '3':
-        return { ...obj1, children: children1 };
-      case '4':
+      case 'undefined1':
+        return { ...obj2, type: typeForAdded };
+      case 'undefined2':
+        return { ...obj1, type: typeForDeleted };
+      case 'equal':
+        return obj1;
+      case 'bothObjects':
         return { ...obj1, children: merge(val1, val2) };
-      case '5':
-        return [{ ...obj1, children: children1 }, { ...obj2, children: children2 }];
+      case 'diffState':
+        return [{ ...obj1, type: 'changed' }, { ...obj2, type: 'set' }];
       default:
         throw new Error(`Unexpectated state: ${state}!`);
     }

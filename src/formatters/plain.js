@@ -1,4 +1,10 @@
-const isAppropriate = (elem) => (typeof elem === 'string' || Array.isArray(elem));
+const isAppropriateType = (elem) => {
+  if ((typeof elem === 'string') || (Array.isArray(elem) && elem.length > 0)) {
+    return true;
+  }
+  return false;
+};
+
 const makeStr = (elem) => (Array.isArray(elem) ? '[complex value]' : `'${elem}'`);
 
 export default (obj) => {
@@ -7,8 +13,8 @@ export default (obj) => {
       const { name, type, children } = elem;
       const prevElem = node[index - 1];
       const prevChildren = prevElem ? prevElem.children : [];
-      const newVal = isAppropriate(children) ? makeStr(children) : children;
-      const prevVal = isAppropriate(prevChildren) ? makeStr(prevChildren) : prevChildren;
+      const newVal = isAppropriateType(children) ? makeStr(children) : children;
+      const prevVal = isAppropriateType(prevChildren) ? makeStr(prevChildren) : prevChildren;
       const additionalPoint = point ? '.' : '';
       const newProp = `${propName}${additionalPoint}${name}`;
       switch (type) {
