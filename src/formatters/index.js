@@ -2,7 +2,7 @@ import plain from './plain.js';
 import stylish from './stylish.js';
 import json from './json.js';
 
-export default (obj, format = 'stylish') => {
+export default (obj, format) => {
   switch (format) {
     case 'stylish':
       return stylish(obj);
