@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import fs from 'fs';
 import genDiff from '../src/index.js';
+import parse from '../src/parsers.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -31,4 +32,9 @@ test.each(files)('gendiff for "json" format', (file1, file2) => {
   const file2path = getFixturePath(file2);
   const result = readFile('resultJson.txt');
   expect(genDiff(file1path, file2path, 'json')).toEqual(result);
+});
+
+test('check for parsing error', () => {
+  const file1path = getFixturePath('file1.js');
+  expect(() => { parse(file1path, 'js'); }).toThrow('Invalid parsing result!');
 });
