@@ -21,10 +21,8 @@ const buildTree = (obj1, obj2) => {
       case (_.isObject(val1) && _.isObject(val2)):
         return { name: key, type: 'nested', children: buildTree(val1, val2) };
       case (val1 === val2):
-      case (_.has(obj1, key) && _.isEmpty(obj2, key)):
-        return { name: key, type: 'unchanged', children: children1 };
-      case (_.has(obj2, key) && _.isEmpty(obj1, key)):
-        return { name: key, type: 'unchanged', children: children2 };
+      case (_.isEmpty(obj1) || _.isEmpty(obj2)):
+        return { name: key, type: 'unchanged', children: children1 || children2 };
       case (_.has(obj1, key) && _.has(obj2, key)):
         return { name: key, type: 'changed', children: { old: children1, new: children2 } };
       case (_.has(obj1, key)):
