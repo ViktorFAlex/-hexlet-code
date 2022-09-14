@@ -1,6 +1,7 @@
 const generateSymbol = (type) => {
   switch (type) {
     case 'unchanged':
+    case 'nested':
       return '  ';
     case 'deleted':
       return '- ';
