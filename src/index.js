@@ -11,8 +11,9 @@ const mergeKeys = (obj1, obj2) => {
 
 const getChildrenValues = (node, data1, data2) => [_.get(data1, node), _.get(data2, node)];
 
-const buildTree = (obj1, obj2) => _.sortBy(mergeKeys(obj1, obj2))
-  .flatMap((key) => {
+const buildTree = (obj1, obj2) => {
+  const sortedKeys = _.sortBy(mergeKeys(obj1, obj2));
+  return sortedKeys.flatMap((key) => {
     const [val1, val2] = getChildrenValues(key, obj1, obj2);
     if (_.isObject(val1) && _.isObject(val2)) {
       return { key, type: 'nested', children: buildTree(val1, val2) };
@@ -33,6 +34,7 @@ const buildTree = (obj1, obj2) => _.sortBy(mergeKeys(obj1, obj2))
     const newType = val1 ? 'deleted' : 'added';
     return { key, type: newType, children: newChildren };
   });
+};
 
 export default (path1, path2, formatName = 'stylish') => {
   const [fileData1, fileExt1] = readFile(path1);
