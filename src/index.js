@@ -16,7 +16,7 @@ const buildTree = (obj1, obj2) => {
   return sortedKeys.flatMap((key) => {
     const [val1, val2] = getChildrenValues(key, obj1, obj2);
     switch (true) {
-      case (_.isObject(val1) && _.isObject(val2)): 
+      case (_.isObject(val1) && _.isObject(val2)):
         return { key, type: 'nested', children: buildTree(val1, val2) };
       case (val1 === val2):
         return { key, type: 'unchanged', children: val1 };
