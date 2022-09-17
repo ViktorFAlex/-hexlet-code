@@ -23,8 +23,8 @@ test.each(files)('gendiff for "stylish" format', (file1, file2) => {
 test.each(files)('gendiff for "plain" format', (file1, file2) => {
   const file1path = getFixturePath(file1);
   const file2path = getFixturePath(file2);
-  const result = readFile('resultPlain.txt');
-  expect(genDiff(file1path, file2path, 'plain')).toEqual(result);
+  const data = readFile('resultPlain.txt');
+  expect(genDiff(file1path, file2path, 'plain')).toEqual(data);
 });
 
 test.each(files)('gendiff for "json" format', (file1, file2) => {
@@ -32,6 +32,12 @@ test.each(files)('gendiff for "json" format', (file1, file2) => {
   const file2path = getFixturePath(file2);
   const result = readFile('resultJson.txt');
   expect(genDiff(file1path, file2path, 'json')).toEqual(result);
+});
+
+test.each(files)('check for genDiff errors', (file1, file2) => {
+  const file1path = getFixturePath(file1);
+  const file2path = getFixturePath(file2);
+  expect(() => { genDiff(file1path, file2path); }).not.toThrow('Unexpected result of comparing!');
 });
 
 test('check for parsing error', () => {
