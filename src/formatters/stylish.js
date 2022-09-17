@@ -1,13 +1,17 @@
 import _ from 'lodash';
 
-const generateSymbol = (type) => {
+const generateSymbol = (type = 'other') => {
   switch (type) {
     case 'deleted':
       return '  - ';
     case 'added':
       return '  + ';
-    default:
+    case 'nested':
+    case 'unchanged':
+    case 'other':
       return '    ';
+    default:
+      throw new Error(`Unexpected type of difference: ${type}!`);
   }
 };
 
