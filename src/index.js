@@ -21,18 +21,15 @@ const buildTree = (obj1, obj2) => {
       case (val1 === val2):
         return { key, type: 'unchanged', children: val1 };
       case (_.has(obj1, key) && _.has(obj2, key)): {
-        const children1 = _.isObject(val1) ? buildTree(val1) : val1;
-        const children2 = _.isObject(val2) ? buildTree(val2) : val2;
-        return { key, type: 'changed', children: { old: children1, new: children2 } };
+        return { key, type: 'changed', children: { old: val1, new: val2 } };
+      }
+      case (!val1 || !val2): {
+        const children = val1 || val2;
+        const newType = val1 ? 'deleted' : 'added';
+        return { key, type: newType, children };
       }
       default: {
-        const children = val1 || val2;
-        const newChildren = _.isObject(children) ? buildTree(children) : children;
-        if (!obj1 || !obj2) {
-          return { key, type: 'incomparable', children: newChildren };
-        }
-        const newType = val1 ? 'deleted' : 'added';
-        return { key, type: newType, children: newChildren };
+        throw new Error('Unexpected result of comparing!');
       }
     }
   });

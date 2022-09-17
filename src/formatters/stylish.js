@@ -1,41 +1,39 @@
+import _ from 'lodash';
+
 const generateSymbol = (type) => {
   switch (type) {
-    case 'unchanged':
-    case 'nested':
-    case 'incomparable':
-      return '  ';
     case 'deleted':
-      return '- ';
+      return '  - ';
     case 'added':
-      return '+ ';
+      return '  + ';
     default:
-      throw new Error(`Unexpected node difference: ${type}!`);
+      return '    ';
   }
 };
 
 export default (obj) => {
   const iter = (node, depth = 0) => {
-    const defaultSpaceCount = depth * 4;
-    const bracketIndent = ' '.repeat(defaultSpaceCount);
-    const baseIndent = ' '.repeat(defaultSpaceCount + 2);
+    if (!Array.isArray(node)) {
+      return _.isObject(node) ? iter(Object.entries(node), depth) : node;
+    }
+    const commonIndent = ' '.repeat(depth * 4);
     const result = node.flatMap((elem) => {
+      if (Array.isArray(elem)) {
+        const [key, value] = elem;
+        return `${commonIndent}${generateSymbol()}${key}: ${iter(value, depth + 1)}`;
+      }
       const { key, type, children } = elem;
       if (type === 'changed') {
-        const firstSymbol = generateSymbol('deleted');
-        const secondSymbol = generateSymbol('added');
-        const indent1 = `${baseIndent}${firstSymbol}`;
-        const indent2 = `${baseIndent}${secondSymbol}`;
         const { old: oldVal, new: newVal } = children;
-        const oldChildren = Array.isArray(oldVal) ? iter(oldVal, depth + 1) : oldVal;
-        const newChildren = Array.isArray(newVal) ? iter(newVal, depth + 1) : newVal;
-        return [`${indent1}${key}: ${oldChildren}`, `${indent2}${key}: ${newChildren}`];
+        const firstIndent = `${commonIndent}${generateSymbol('deleted')}`;
+        const secondIndent = `${commonIndent}${generateSymbol('added')}`;
+        const firstNode = `${firstIndent}${key}: ${iter(oldVal, depth + 1)}`;
+        const secondNode = `${secondIndent}${key}: ${iter(newVal, depth + 1)}`;
+        return [firstNode, secondNode];
       }
-      const newChildren = Array.isArray(children) ? iter(children, depth + 1) : children;
-      const additionalSymbol = generateSymbol(type);
-      const indent = `${baseIndent}${additionalSymbol}`;
-      return [`${indent}${key}: ${newChildren}`];
+      return `${commonIndent}${generateSymbol(type)}${key}: ${iter(children, depth + 1)}`;
     });
-    return ['{', ...result, `${bracketIndent}}`].join('\n');
+    return ['{', ...result, `${commonIndent}}`].join('\n');
   };
   return iter(obj);
 };
