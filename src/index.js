@@ -29,7 +29,7 @@ const buildTree = (obj1, obj2) => {
         return { key, type: newType, children };
       }
       default: {
-        throw new Error('Unexpected result of comparing!');
+        throw new Error('Unexpected result of comparing!'); // TODO: make test for this!
       }
     }
   });

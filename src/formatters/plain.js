@@ -30,7 +30,7 @@ export default (obj) => {
       }
       return Array.isArray(children) ? iter(children, newProp, true) : [];
     });
-    return result.join('\n').trim();
+    return result.join('\n');
   };
   return iter(obj, '');
 };

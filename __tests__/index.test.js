@@ -34,12 +34,6 @@ test.each(files)('gendiff for "json" format', (file1, file2) => {
   expect(genDiff(file1path, file2path, 'json')).toEqual(result);
 });
 
-test.each(files)('check for genDiff errors', (file1, file2) => {
-  const file1path = getFixturePath(file1);
-  const file2path = getFixturePath(file2);
-  expect(() => { genDiff(file1path, file2path); }).not.toThrow('Unexpected result of comparing!');
-});
-
 test('check for parsing error', () => {
   const file1path = getFixturePath('file1.js');
   expect(() => { parse(file1path, 'js'); }).toThrow('Invalid parsing result!');
