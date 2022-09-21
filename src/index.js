@@ -4,8 +4,8 @@ import format from './formatters/index.js';
 import readFile from './readfile.js';
 
 const mergeKeys = (obj1, obj2) => {
-  const keys1 = obj1 ? Object.keys(obj1) : [];
-  const keys2 = obj2 ? Object.keys(obj2) : [];
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
   return _.union(keys1, keys2);
 };
 

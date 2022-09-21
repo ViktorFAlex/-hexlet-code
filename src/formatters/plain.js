@@ -1,13 +1,11 @@
 import _ from 'lodash';
 
-const isAppropriateType = (elem) => {
-  if ((typeof elem === 'string') || _.isObject(elem)) {
-    return true;
+const generateNewValue = (value) => {
+  if (typeof value === 'string') {
+    return `'${value}'`;
   }
-  return false;
+  return _.isObject(value) ? '[complex value]' : value;
 };
-
-const makeStr = (elem) => (_.isObject(elem) ? '[complex value]' : `'${elem}'`);
 
 export default (obj) => {
   const iter = (node, propName, isSeparated = false) => {
@@ -17,15 +15,15 @@ export default (obj) => {
       const newProp = `${propName}${separator}${key}`;
       if (type === 'changed') {
         const { old: oldVal, new: newVal } = children;
-        const deletedValue = isAppropriateType(oldVal) ? makeStr(oldVal) : oldVal;
-        const addedValue = isAppropriateType(newVal) ? makeStr(newVal) : newVal;
+        const deletedValue = generateNewValue(oldVal);
+        const addedValue = generateNewValue(newVal);
         return `Property '${newProp}' was updated. From ${deletedValue} to ${addedValue}`;
       }
       if (type === 'deleted') {
         return `Property '${newProp}' was removed`;
       }
       if (type === 'added') {
-        const newChildren = isAppropriateType(children) ? makeStr(children) : children;
+        const newChildren = generateNewValue(children);
         return `Property '${newProp}' was added with value: ${newChildren}`;
       }
       return Array.isArray(children) ? iter(children, newProp, true) : [];
