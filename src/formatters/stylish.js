@@ -1,16 +1,17 @@
 import _ from 'lodash';
 
 const symbols = {
+  space: ' ',
   doubleSpace: '  ',
   minusWithSpace: '- ',
   plusWithSpace: '+ ',
+  spaceCount: 4,
+  linesSpaceCount: 2,
 };
 
 const generateIndents = (depth) => {
-  const indentForLinesCount = 2;
-  const indentCount = 4;
-  const linesIndent = ' '.repeat(depth * indentCount + indentForLinesCount);
-  const bracketIndent = ' '.repeat(depth * indentCount);
+  const linesIndent = symbols.space.repeat(depth * symbols.spaceCount + symbols.linesSpaceCount);
+  const bracketIndent = symbols.space.repeat(depth * symbols.spaceCount);
   return [linesIndent, bracketIndent];
 };
 
@@ -28,8 +29,7 @@ export default (obj) => {
       const { key, type, children } = elem;
       if (type === 'changed') {
         const { old: oldVal, new: newVal } = children;
-        const firstSymbol = symbols.minusWithSpace;
-        const secondSymbol = symbols.plusWithSpace;
+        const { minusWithSpace: firstSymbol, plusWithSpace: secondSymbol } = symbols;
         const firstNode = `${linesIndent}${firstSymbol}${key}: ${format(oldVal, depth + 1)}`;
         const secondNode = `${linesIndent}${secondSymbol}${key}: ${format(newVal, depth + 1)}`;
         return [firstNode, secondNode];
@@ -37,8 +37,8 @@ export default (obj) => {
       if (type === 'unchanged' || type === 'nested') {
         return `${linesIndent}${symbols.doubleSpace}${key}: ${format(children, depth + 1)}`;
       }
-      const newSymbol = type === 'added' ? symbols.plusWithSpace : symbols.minusWithSpace;
-      return `${linesIndent}${newSymbol}${key}: ${format(children, depth + 1)}`;
+      const symbol = type === 'added' ? symbols.plusWithSpace : symbols.minusWithSpace;
+      return `${linesIndent}${symbol}${key}: ${format(children, depth + 1)}`;
     });
     return ['{', ...result, `${bracketIndent}}`].join('\n');
   };

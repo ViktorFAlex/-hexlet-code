@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const generateNewValue = (value) => {
+const makeStr = (value) => {
   if (typeof value === 'string') {
     return `'${value}'`;
   }
@@ -12,21 +12,21 @@ export default (obj) => {
     const result = node.flatMap((elem) => {
       const { key, type, children } = elem;
       const separator = isSeparated ? '.' : '';
-      const newProp = `${propName}${separator}${key}`;
+      const property = `${propName}${separator}${key}`;
       if (type === 'changed') {
         const { old: oldVal, new: newVal } = children;
-        const deletedValue = generateNewValue(oldVal);
-        const addedValue = generateNewValue(newVal);
-        return `Property '${newProp}' was updated. From ${deletedValue} to ${addedValue}`;
+        const deletedValue = makeStr(oldVal);
+        const addedValue = makeStr(newVal);
+        return `Property '${property}' was updated. From ${deletedValue} to ${addedValue}`;
       }
       if (type === 'deleted') {
-        return `Property '${newProp}' was removed`;
+        return `Property '${property}' was removed`;
       }
       if (type === 'added') {
-        const newChildren = generateNewValue(children);
-        return `Property '${newProp}' was added with value: ${newChildren}`;
+        const newChildren = makeStr(children);
+        return `Property '${property}' was added with value: ${newChildren}`;
       }
-      return Array.isArray(children) ? iter(children, newProp, true) : [];
+      return Array.isArray(children) ? iter(children, property, true) : [];
     });
     return result.join('\n');
   };
