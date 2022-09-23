@@ -1,17 +1,18 @@
 import _ from 'lodash';
 
+const spaceCount = 4;
+const linesSpaceCount = 2;
+
 const symbols = {
   space: ' ',
   doubleSpace: '  ',
   minusWithSpace: '- ',
   plusWithSpace: '+ ',
-  spaceCount: 4,
-  linesSpaceCount: 2,
 };
 
 const generateIndents = (depth) => {
-  const linesIndent = symbols.space.repeat(depth * symbols.spaceCount + symbols.linesSpaceCount);
-  const bracketIndent = symbols.space.repeat(depth * symbols.spaceCount);
+  const linesIndent = symbols.space.repeat(depth * spaceCount + linesSpaceCount);
+  const bracketIndent = symbols.space.repeat(depth * spaceCount);
   return [linesIndent, bracketIndent];
 };
 
