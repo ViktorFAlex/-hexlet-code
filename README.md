@@ -1,4 +1,4 @@
-# <p align=center> Brain-games </p> 
+# <p align=center> Difference generator </p> 
 
 ### Hexlet tests and linter status:
 
