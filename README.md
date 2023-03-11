@@ -7,7 +7,7 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/9a9be89c302d18b51243/test_coverage)](https://codeclimate.com/github/ViktorFAlex/frontend-project-46/test_coverage)
 
 ### Preview
-![preview](https://github.com/ViktorFAlex/projects-previews/blob/main/gendiff.gif)
+<img src="https://github.com/ViktorFAlex/projects-previews/blob/main/gendiff.gif" width="1200" height="780">
 
 ### Demonstrations/Демонстрации
 
